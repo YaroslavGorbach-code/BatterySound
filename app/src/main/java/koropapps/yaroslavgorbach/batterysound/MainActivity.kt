@@ -1,11 +1,18 @@
 package koropapps.yaroslavgorbach.batterysound
 
+import android.content.BroadcastReceiver
+import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.IntentFilter
+import android.os.BatteryManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import koropapps.yaroslavgorbach.batterysound.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
