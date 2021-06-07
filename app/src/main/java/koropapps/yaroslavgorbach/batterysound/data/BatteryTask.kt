@@ -8,5 +8,6 @@ data class BatteryTask(
     var level: Int,
     @Nullable var uri: String?,
     @Nullable var text: String?,
-    var isActive: Boolean = false
+    var isActive: Boolean = false,
+    var isConsumed: Boolean = false
 )
