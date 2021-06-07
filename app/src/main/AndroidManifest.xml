@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".BatteryService"/>
+        <service android:name=".services.BatteryService"/>
     </application>
 
 </manifest>
