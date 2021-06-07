@@ -15,6 +15,10 @@ class App : Application(), RepoProvider {
         createChannel()
     }
 
+    override fun provideRepo(): RepoImp {
+        return repo
+    }
+
     private fun createChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
@@ -27,7 +31,4 @@ class App : Application(), RepoProvider {
         }
     }
 
-    override fun provideRepo(): RepoImp {
-        return repo
-    }
 }
