@@ -9,14 +9,13 @@ import koropapps.yaroslavgorbach.batterysound.data.RepoImp
 import koropapps.yaroslavgorbach.batterysound.data.RepoProvider
 
 class App : Application(), RepoProvider {
-    private val repo by lazy { RepoImp() }
     override fun onCreate() {
         super.onCreate()
         createChannel()
     }
 
     override fun provideRepo(): RepoImp {
-        return repo
+        return RepoImp
     }
 
     private fun createChannel() {

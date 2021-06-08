@@ -15,6 +15,7 @@ class TasksListAdapter(private val onTask: (BatteryTask) -> Unit) :
 
     fun setData(items: List<BatteryTask>) {
         data = items
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Vh =
@@ -22,7 +23,9 @@ class TasksListAdapter(private val onTask: (BatteryTask) -> Unit) :
 
     override fun onBindViewHolder(holder: Vh, position: Int) = holder.bind(data[position])
     override fun getItemCount(): Int = data.size
-
+    override fun getItemId(position: Int): Long {
+        return data[position].id.toLong()
+    }
 
     inner class Vh(
         private val binding: ItemTaskBinding,
@@ -30,7 +33,7 @@ class TasksListAdapter(private val onTask: (BatteryTask) -> Unit) :
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.root.setOnClickListener {
+            binding.icPlay.setOnClickListener {
                 onTask(data[adapterPosition])
             }
         }
@@ -40,21 +43,12 @@ class TasksListAdapter(private val onTask: (BatteryTask) -> Unit) :
             binding.text.text = item.text
             binding.level.text = item.level.toString() + "%"
 
-            if (item.isActive) {
                 binding.icPlay.setImageDrawable(
                     ContextCompat.getDrawable(
                         binding.root.context,
-                        R.drawable.ic_stop
+                        if (item.isActive) R.drawable.ic_stop else R.drawable.ic_play
                     )
                 )
-            } else {
-                binding.icPlay.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        binding.root.context,
-                        R.drawable.ic_play
-                    )
-                )
-            }
         }
     }
 }
