@@ -2,10 +2,10 @@ package koropapps.yaroslavgorbach.batterysound.screen
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import koropapps.yaroslavgorbach.batterysound.App
 import koropapps.yaroslavgorbach.batterysound.R
@@ -13,6 +13,8 @@ import koropapps.yaroslavgorbach.batterysound.data.BatteryTask
 import koropapps.yaroslavgorbach.batterysound.databinding.FragmentTasksBinding
 import koropapps.yaroslavgorbach.batterysound.services.BatteryService
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -39,9 +41,21 @@ class TasksListFragment : Fragment(R.layout.fragment_tasks), AddTaskDialog.Host 
             override fun onAdd() {
                 AddTaskDialog().show(childFragmentManager, null)
             }
+
+            override fun onSwipe(batteryTask: BatteryTask) {
+                repo.removeTask(batteryTask)
+
+            }
+
+            override fun onUndoRemove(batteryTask: BatteryTask) {
+                lifecycleScope.launch { repo.addTask(batteryTask) }
+            }
+
         })
 
-        repo.getTasks().observe(viewLifecycleOwner, v::setTasks)
+        repo.getTasks().observe(viewLifecycleOwner, {
+            v.setTasks(it?.sortedBy(BatteryTask::createDate)?.reversed())
+        })
     }
 
     override fun onAdd(level: Int, text: String) {

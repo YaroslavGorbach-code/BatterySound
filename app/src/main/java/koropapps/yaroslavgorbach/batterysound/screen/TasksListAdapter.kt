@@ -17,6 +17,10 @@ class TasksListAdapter(private val onTask: (BatteryTask) -> Unit) :
         setHasStableIds(true)
     }
 
+    fun getList(): List<BatteryTask>{
+        return data
+    }
+
     fun setData(items: List<BatteryTask>) {
         data = items
         notifyDataSetChanged()

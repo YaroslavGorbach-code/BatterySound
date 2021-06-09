@@ -2,6 +2,9 @@ package koropapps.yaroslavgorbach.batterysound.data
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 
 object RepoImp : Repo {
     private val tasks: MutableLiveData<List<BatteryTask>?> = MutableLiveData(null)
@@ -13,25 +16,6 @@ object RepoImp : Repo {
             BatteryTask(3, 66, null, "TIME TO CHARGE", false),
             BatteryTask(4, 67, null, "TIME TO CHARGE", false),
             BatteryTask(5, 68, null, "TIME TO CHARGE", false),
-            BatteryTask(6, 69, null, "TIME TO CHARGE", false),
-            BatteryTask(7, 70, null, "TIME TO CHARGE", false),
-            BatteryTask(8, 71, null, "TIME TO CHARGE", false),
-            BatteryTask(9, 72, null, "TIME TO CHARGE", false),
-            BatteryTask(10, 73, null, "TIME TO CHARGE", false),
-            BatteryTask(11, 74, null, "TIME TO CHARGE", false),
-            BatteryTask(12, 75, null, "TIME TO CHARGE", false),
-            BatteryTask(13, 76, null, "TIME TO CHARGE", false),
-            BatteryTask(14, 77, null, "TIME TO CHARGE", false),
-            BatteryTask(15, 78, null, "TIME TO CHARGE", false),
-            BatteryTask(16, 79, null, "TIME TO CHARGE", false),
-            BatteryTask(17, 80, null, "Шо ти голова", false),
-            BatteryTask(18, 81, null, "Вадим вставай блядь", false),
-            BatteryTask(19, 82, null, "Да есть же", false),
-            BatteryTask(20, 83, null, "TIME TO CHARGE", false),
-            BatteryTask(21, 84, null, "TIME TO CHARGE", false),
-            BatteryTask(22, 85, null, "TIME TO CHARGE", false),
-            BatteryTask(23, 86, null, "TIME TO CHARGE", false),
-            BatteryTask(24, 87, null, "TIME TO CHARGE", false)
         )
     }
 
@@ -41,7 +25,7 @@ object RepoImp : Repo {
 
 
     override fun getTasks(): MutableLiveData<List<BatteryTask>?> {
-        return tasks
+       return tasks
     }
 
     override suspend fun updateTask(task: BatteryTask) {
@@ -81,5 +65,9 @@ object RepoImp : Repo {
             }
         }
         return ""
+    }
+
+    override fun removeTask(batteryTask: BatteryTask) {
+        tasks.value = tasks.value?.filter { it != batteryTask }
     }
 }
