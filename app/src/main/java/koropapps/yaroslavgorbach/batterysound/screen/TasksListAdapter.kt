@@ -13,6 +13,10 @@ class TasksListAdapter(private val onTask: (BatteryTask) -> Unit) :
     RecyclerView.Adapter<TasksListAdapter.Vh>() {
     private var data: List<BatteryTask> = ArrayList()
 
+    init {
+        setHasStableIds(true)
+    }
+
     fun setData(items: List<BatteryTask>) {
         data = items
         notifyDataSetChanged()
@@ -43,12 +47,12 @@ class TasksListAdapter(private val onTask: (BatteryTask) -> Unit) :
             binding.text.text = item.text
             binding.level.text = item.level.toString() + "%"
 
-                binding.icPlay.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        binding.root.context,
-                        if (item.isActive) R.drawable.ic_stop else R.drawable.ic_play
-                    )
+            binding.icPlay.setImageDrawable(
+                ContextCompat.getDrawable(
+                    binding.root.context,
+                    if (item.isActive) R.drawable.ic_stop else R.drawable.ic_play
                 )
+            )
         }
     }
 }

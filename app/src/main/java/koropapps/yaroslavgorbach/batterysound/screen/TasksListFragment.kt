@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import koropapps.yaroslavgorbach.batterysound.App
 import koropapps.yaroslavgorbach.batterysound.R
+import koropapps.yaroslavgorbach.batterysound.data.BatteryTask
 import koropapps.yaroslavgorbach.batterysound.databinding.FragmentTasksBinding
 import koropapps.yaroslavgorbach.batterysound.services.BatteryService
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -24,31 +25,18 @@ class TasksListFragment : Fragment(R.layout.fragment_tasks) {
         val serviceIntent = Intent(context, BatteryService::class.java)
 
         // init view
-        val binding = FragmentTasksBinding.bind(view)
-        val tasksAdapter = TasksListAdapter { task ->
-            task.isActive = !task.isActive
-            lifecycleScope.launch { repo.updateTask(task) }
-            if (repo.getStartServiceIsAllow()) {
-                ContextCompat.startForegroundService(requireContext(), serviceIntent)
-            }else{
-                context?.stopService(serviceIntent)
+        val view = TasksListView(FragmentTasksBinding.bind(view), object : TasksListView.Callback {
+            override fun onTask(task: BatteryTask) {
+                task.isActive = !task.isActive
+                lifecycleScope.launch { repo.updateTask(task) }
+                if (repo.getStartServiceIsAllow()) {
+                    ContextCompat.startForegroundService(requireContext(), serviceIntent)
+                } else {
+                    context?.stopService(serviceIntent)
+                }
             }
+        })
 
-        }.apply {
-            setHasStableIds(true)
-        }
-
-
-        repo.getTasks().observe(viewLifecycleOwner) {
-            it?.let { it1 -> tasksAdapter.setData(it1) }
-        }
-
-
-        binding.list.apply {
-            adapter = tasksAdapter
-            layoutManager = LinearLayoutManager(context)
-            addItemDecoration(LineDecorator(context, R.drawable.line_devider))
-        }
-
+        repo.getTasks().observe(viewLifecycleOwner, view::setTasks)
     }
 }
