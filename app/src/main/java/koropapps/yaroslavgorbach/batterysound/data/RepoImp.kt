@@ -56,6 +56,10 @@ object RepoImp : Repo {
         }
     }
 
+    override suspend fun addTask(task: BatteryTask) {
+        tasks.value = tasks.value?.let { listOf(task) + it }
+    }
+
 
     override fun getStartServiceIsAllow(): Boolean {
         return tasks.value?.find { it.isActive } != null

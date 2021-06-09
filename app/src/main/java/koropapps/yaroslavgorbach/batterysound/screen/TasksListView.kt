@@ -9,6 +9,7 @@ import koropapps.yaroslavgorbach.batterysound.databinding.FragmentTasksBinding
 class TasksListView(binding: FragmentTasksBinding, callback: Callback) {
     interface Callback {
         fun onTask(task: BatteryTask)
+        fun onAdd()
     }
 
     var tasksAdapter: TasksListAdapter = TasksListAdapter(callback::onTask)
@@ -21,20 +22,22 @@ class TasksListView(binding: FragmentTasksBinding, callback: Callback) {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    if (dy >0) {
+                    if (dy > 0) {
                         // Scroll Down
-                        if (binding.button.isShown) {
-                            binding.button.hide()
+                        if (binding.fab.isShown) {
+                            binding.fab.hide()
                         }
-                    }
-                    else if (dy <0) {
+                    } else if (dy < 0) {
                         // Scroll Up
-                        if (!binding.button.isShown) {
-                            binding.button.show()
+                        if (!binding.fab.isShown) {
+                            binding.fab.show()
                         }
                     }
                 }
             })
+        }
+        binding.fab.setOnClickListener {
+            callback.onAdd()
         }
     }
 
