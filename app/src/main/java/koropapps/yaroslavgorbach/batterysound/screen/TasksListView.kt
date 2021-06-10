@@ -53,7 +53,7 @@ class TasksListView(binding: FragmentTasksBinding, callback: Callback) {
                 SwipeDismissDecor(ContextCompat.getDrawable(context, R.drawable.delete_item_hint_bg)!!) {
                     val task = tasksAdapter.getList()[it.adapterPosition]
                     callback.onSwipe(task)
-                    Snackbar.make(binding.root, "Task removed", Snackbar.LENGTH_SHORT).setAction("UNDO") {
+                    Snackbar.make(binding.root, R.string.taskRemoved, Snackbar.LENGTH_SHORT).setAction(R.string.undo) {
                         callback.onUndoRemove(task)
                     }.show()
                 }

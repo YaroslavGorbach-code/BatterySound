@@ -7,12 +7,12 @@ import java.util.*
 
 data class BatteryTask(
     val id: Int,
-    var level: Int,
+    var batteryLevel: Int,
     @Nullable var uri: String?,
     @Nullable var text: String?,
     var isActive: Boolean = false,
     var isConsumed: Boolean = false,
-    var createDate: Long = Date().time
+    var created: Long = Date().time
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
@@ -27,12 +27,12 @@ data class BatteryTask(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
-        parcel.writeInt(level)
+        parcel.writeInt(batteryLevel)
         parcel.writeString(uri)
         parcel.writeString(text)
         parcel.writeByte(if (isActive) 1 else 0)
         parcel.writeByte(if (isConsumed) 1 else 0)
-        parcel.writeLong(createDate)
+        parcel.writeLong(created)
     }
 
     override fun describeContents(): Int {

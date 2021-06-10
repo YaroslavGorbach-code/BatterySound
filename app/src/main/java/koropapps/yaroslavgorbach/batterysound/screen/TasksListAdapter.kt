@@ -58,7 +58,7 @@ class TasksListAdapter(private val callback: Callback) :
         @SuppressLint("SetTextI18n")
         fun bind(item: BatteryTask) {
             binding.text.text = item.text
-            binding.level.text = item.level.toString() + "%"
+            binding.level.text = item.batteryLevel.toString() + "%"
 
             binding.icPlay.setImageDrawable(
                 ContextCompat.getDrawable(

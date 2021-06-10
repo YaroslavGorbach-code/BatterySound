@@ -2,9 +2,6 @@ package koropapps.yaroslavgorbach.batterysound.data
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.map
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.map
 
 object RepoImp : Repo {
     private val tasks: MutableLiveData<List<BatteryTask>?> = MutableLiveData(null)
@@ -51,7 +48,7 @@ object RepoImp : Repo {
 
     override fun getTextToSpeak(batteryLevel: Int): String {
         tasks.value?.forEach { task ->
-            if (batteryLevel == task.level) {
+            if (batteryLevel == task.batteryLevel) {
                 if (task.isActive && !task.isConsumed) {
                     task.text?.let {
                         task.isConsumed = true

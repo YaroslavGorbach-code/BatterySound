@@ -19,6 +19,7 @@ import kotlin.random.Random
 @InternalCoroutinesApi
 class TasksListFragment : Fragment(R.layout.fragment_tasks), AddUpdateTaskDialog.Host {
     val repo by lazy { (activity?.application as App).provideRepo() }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val serviceIntent = Intent(context, BatteryService::class.java)
@@ -57,7 +58,7 @@ class TasksListFragment : Fragment(R.layout.fragment_tasks), AddUpdateTaskDialog
         })
 
         repo.getTasks().observe(viewLifecycleOwner, {
-            v.setTasks(it?.sortedBy(BatteryTask::createDate)?.reversed())
+            v.setTasks(it?.sortedBy(BatteryTask::created)?.reversed())
         })
     }
 
