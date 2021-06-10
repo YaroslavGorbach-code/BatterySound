@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import koropapps.yaroslavgorbach.batterysound.R
 import koropapps.yaroslavgorbach.batterysound.data.BatteryTask
 import koropapps.yaroslavgorbach.batterysound.databinding.ItemTaskBinding
+import koropapps.yaroslavgorbach.batterysound.utill.getName
 
 class TasksListAdapter(private val callback: Callback) :
     RecyclerView.Adapter<TasksListAdapter.Vh>() {
@@ -57,7 +58,9 @@ class TasksListAdapter(private val callback: Callback) :
 
         @SuppressLint("SetTextI18n")
         fun bind(item: BatteryTask) {
-            binding.text.text = item.text
+            if (!item.text.isNullOrEmpty()) binding.text.text = item.text
+            if (item.fileUri != null) binding.text.text = item.fileUri!!.getName(itemView.context)
+
             binding.level.text = item.batteryLevel.toString() + "%"
 
             binding.icPlay.setImageDrawable(

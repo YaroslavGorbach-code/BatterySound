@@ -8,11 +8,7 @@ object RepoImp : Repo {
 
     init {
         tasks.value = listOf(
-            BatteryTask(1, 64, null, "TIME TO CHARGE", false),
-            BatteryTask(2, 65, null, "TIME TO CHARGE", false),
-            BatteryTask(3, 66, null, "TIME TO CHARGE", false),
-            BatteryTask(4, 67, null, "TIME TO CHARGE", false),
-            BatteryTask(5, 68, null, "TIME TO CHARGE", false),
+            BatteryTask(1, 64, null, "Test task"),
         )
     }
 

@@ -1,6 +1,7 @@
 package koropapps.yaroslavgorbach.batterysound.screen
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -19,6 +20,7 @@ import kotlin.random.Random
 @InternalCoroutinesApi
 class TasksListFragment : Fragment(R.layout.fragment_tasks), AddUpdateTaskDialog.Host {
     val repo by lazy { (activity?.application as App).provideRepo() }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,7 +44,6 @@ class TasksListFragment : Fragment(R.layout.fragment_tasks), AddUpdateTaskDialog
 
             override fun onSwipe(batteryTask: BatteryTask) {
                 repo.removeTask(batteryTask)
-
             }
 
             override fun onUndoRemove(batteryTask: BatteryTask) {
@@ -62,9 +63,9 @@ class TasksListFragment : Fragment(R.layout.fragment_tasks), AddUpdateTaskDialog
         })
     }
 
-    override fun onAdded(level: Int, text: String) {
+    override fun onAdded(level: Int, text: String?, fileUri: Uri?) {
         lifecycleScope.launch {
-            repo.addTask(BatteryTask(Random.nextInt(), level, null, text))
+            repo.addTask(BatteryTask(Random.nextInt(), level, fileUri, text))
         }
     }
 

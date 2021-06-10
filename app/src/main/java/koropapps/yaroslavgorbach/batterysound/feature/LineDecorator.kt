@@ -1,4 +1,4 @@
-package koropapps.yaroslavgorbach.batterysound.screen
+package koropapps.yaroslavgorbach.batterysound.feature
 
 import android.content.Context
 import android.graphics.Canvas
