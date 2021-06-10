@@ -1,6 +1,5 @@
 package koropapps.yaroslavgorbach.batterysound.screen
 
-import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,13 +10,23 @@ import koropapps.yaroslavgorbach.batterysound.databinding.FragmentTasksBinding
 
 class TasksListView(binding: FragmentTasksBinding, callback: Callback) {
     interface Callback {
-        fun onTask(task: BatteryTask)
+        fun onStartTask(task: BatteryTask)
         fun onAdd()
         fun onSwipe(batteryTask: BatteryTask)
         fun onUndoRemove(batteryTask: BatteryTask)
+        fun onEditTask(batteryTask: BatteryTask)
     }
 
-    var tasksAdapter: TasksListAdapter = TasksListAdapter(callback::onTask)
+    private var tasksAdapter: TasksListAdapter = TasksListAdapter(object :TasksListAdapter.Callback{
+        override fun onStartTask(batteryTask: BatteryTask) {
+            callback.onStartTask(batteryTask)
+        }
+
+        override fun onEditTask(batteryTask: BatteryTask) {
+            callback.onEditTask(batteryTask)
+        }
+
+    })
 
     init {
         binding.list.apply {

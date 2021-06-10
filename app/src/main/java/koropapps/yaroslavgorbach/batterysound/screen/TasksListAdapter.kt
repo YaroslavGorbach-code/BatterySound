@@ -9,15 +9,21 @@ import koropapps.yaroslavgorbach.batterysound.R
 import koropapps.yaroslavgorbach.batterysound.data.BatteryTask
 import koropapps.yaroslavgorbach.batterysound.databinding.ItemTaskBinding
 
-class TasksListAdapter(private val onTask: (BatteryTask) -> Unit) :
+class TasksListAdapter(private val callback: Callback) :
     RecyclerView.Adapter<TasksListAdapter.Vh>() {
+
+    interface Callback {
+        fun onStartTask(batteryTask: BatteryTask)
+        fun onEditTask(batteryTask: BatteryTask)
+    }
+
     private var data: List<BatteryTask> = ArrayList()
 
     init {
         setHasStableIds(true)
     }
 
-    fun getList(): List<BatteryTask>{
+    fun getList(): List<BatteryTask> {
         return data
     }
 
@@ -27,7 +33,7 @@ class TasksListAdapter(private val onTask: (BatteryTask) -> Unit) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Vh =
-        Vh(ItemTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false), onTask)
+        Vh(ItemTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false), callback)
 
     override fun onBindViewHolder(holder: Vh, position: Int) = holder.bind(data[position])
     override fun getItemCount(): Int = data.size
@@ -37,12 +43,15 @@ class TasksListAdapter(private val onTask: (BatteryTask) -> Unit) :
 
     inner class Vh(
         private val binding: ItemTaskBinding,
-        private val onTask: (BatteryTask) -> Unit
+        private val callback: Callback
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.icPlay.setOnClickListener {
-                onTask(data[adapterPosition])
+                callback.onStartTask(data[adapterPosition])
+            }
+            binding.root.setOnClickListener {
+                callback.onEditTask(data[adapterPosition])
             }
         }
 
