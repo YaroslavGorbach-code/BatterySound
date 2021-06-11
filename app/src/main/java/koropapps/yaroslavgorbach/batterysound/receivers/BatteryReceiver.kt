@@ -17,16 +17,15 @@ class BatteryReceiver : BroadcastReceiver() {
         val batteryLevel = intent?.getIntExtra(BatteryManager.EXTRA_LEVEL, 0)
         batteryLevel?.let { it ->
             repo.getFileUri(it)?.let { uri->
-                Log.v("uri", uri.path.toString())
-                val playerIntent = Intent()
+                val playerIntent = Intent(context, MediaPlayerService::class.java)
                 playerIntent.data = uri
-                MediaPlayerService.enqueueWork(context, playerIntent)
+                context?.startService(playerIntent)
             }
 
             repo.getTextToSpeak(it)?.let { text ->
-                val speechIntent = Intent()
+                val speechIntent = Intent(context, TextToSpeechService::class.java)
                 speechIntent.putExtra("MESSAGE", text)
-                TextToSpeechService.enqueueWork(context, speechIntent)
+                context?.startService(speechIntent)
             }
 
         }

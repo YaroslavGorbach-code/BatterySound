@@ -60,6 +60,7 @@ class TasksListFragment : Fragment(R.layout.fragment_tasks), AddUpdateTaskDialog
             override fun onUndoRemove(batteryTask: BatteryTask) {
                 lifecycleScope.launch {
                     batteryTask.isActive = false
+                    batteryTask.isConsumed = false
                     repo.addTask(batteryTask)
                 }
             }

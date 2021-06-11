@@ -1,19 +1,19 @@
 package koropapps.yaroslavgorbach.batterysound.services
 
-import android.content.Context
+import android.app.Service
 import android.content.Intent
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.IBinder
 import android.util.Log
-import androidx.core.app.JobIntentService
+import androidx.core.app.NotificationCompat
 
-class MediaPlayerService: JobIntentService() {
-
-    override fun onHandleWork(intent: Intent) {
-        val uri: Uri = intent.data!!
-        Log.v("uri", uri.path.toString())
-        MediaPlayer().apply {
+class MediaPlayerService : Service() {
+    private val mediaPlayer = MediaPlayer()
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val uri: Uri = intent?.data!!
+        mediaPlayer.apply {
             setAudioAttributes(
                 AudioAttributes.Builder()
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
@@ -21,17 +21,26 @@ class MediaPlayerService: JobIntentService() {
                     .build()
             )
             setDataSource(applicationContext, uri)
-            prepare()
+            prepareAsync()
             setOnPreparedListener {
                 start()
             }
+            setOnCompletionListener {
+                stopSelf()
+            }
         }
+        startForeground(1, NotificationCompat.Builder(this, "1").build())
+        return START_NOT_STICKY
     }
 
+    override fun onDestroy() {
+        Log.v("destroy", "destroy")
+        mediaPlayer.stop()
+        mediaPlayer.release()
+        super.onDestroy()
+    }
 
-    companion object {
-        fun enqueueWork(context: Context?, intent: Intent?) {
-            enqueueWork(context!!, MediaPlayerService::class.java, 1, intent!!)
-        }
+    override fun onBind(intent: Intent?): IBinder? {
+        return null
     }
 }
