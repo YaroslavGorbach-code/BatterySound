@@ -1,5 +1,6 @@
-package koropapps.yaroslavgorbach.batterysound.screen
+package koropapps.yaroslavgorbach.batterysound.screen.tasks
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,7 +12,10 @@ import koropapps.yaroslavgorbach.batterysound.App
 import koropapps.yaroslavgorbach.batterysound.R
 import koropapps.yaroslavgorbach.batterysound.data.BatteryTask
 import koropapps.yaroslavgorbach.batterysound.databinding.FragmentTasksBinding
+import koropapps.yaroslavgorbach.batterysound.screen.addupdate.AddUpdateTaskDialog
 import koropapps.yaroslavgorbach.batterysound.services.BatteryService
+import koropapps.yaroslavgorbach.batterysound.services.MediaPlayerService
+import koropapps.yaroslavgorbach.batterysound.services.TextToSpeechService
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlin.random.Random
@@ -24,17 +28,22 @@ class TasksListFragment : Fragment(R.layout.fragment_tasks), AddUpdateTaskDialog
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val serviceIntent = Intent(context, BatteryService::class.java)
+        val batteryServiceIntent = Intent(context, BatteryService::class.java)
+        val mediaServiceIntent = Intent(context, MediaPlayerService::class.java)
+        val ttsServiceIntent = Intent(context, TextToSpeechService::class.java)
+
 
         // init view
         val v = TasksListView(FragmentTasksBinding.bind(view), object : TasksListView.Callback {
             override fun onStartTask(task: BatteryTask) {
-                task.isActive = !task.isActive
-                lifecycleScope.launch { repo.updateTask(task) }
+                lifecycleScope.launch {
+                    task.isActive = !task.isActive
+                    repo.updateTask(task)
+                }
                 if (repo.getStartServiceIsAllow()) {
-                    ContextCompat.startForegroundService(requireContext(), serviceIntent)
+                    ContextCompat.startForegroundService(requireContext(), batteryServiceIntent)
                 } else {
-                    context?.stopService(serviceIntent)
+                    context?.stopServices(batteryServiceIntent, ttsServiceIntent, mediaServiceIntent)
                 }
             }
 
@@ -44,10 +53,15 @@ class TasksListFragment : Fragment(R.layout.fragment_tasks), AddUpdateTaskDialog
 
             override fun onSwipe(batteryTask: BatteryTask) {
                 repo.removeTask(batteryTask)
+                if(!repo.getStartServiceIsAllow())
+                    context?.stopServices(batteryServiceIntent, ttsServiceIntent, mediaServiceIntent)
             }
 
             override fun onUndoRemove(batteryTask: BatteryTask) {
-                lifecycleScope.launch { repo.addTask(batteryTask) }
+                lifecycleScope.launch {
+                    batteryTask.isActive = false
+                    repo.addTask(batteryTask)
+                }
             }
 
             override fun onEditTask(batteryTask: BatteryTask) {
@@ -73,5 +87,15 @@ class TasksListFragment : Fragment(R.layout.fragment_tasks), AddUpdateTaskDialog
         lifecycleScope.launch {
             repo.updateTask(batteryTask)
         }
+    }
+
+    private fun Context.stopServices(
+        batteryServiceIntent: Intent,
+        ttsServiceIntent: Intent,
+        mediaServiceIntent: Intent
+    ) {
+        stopService(batteryServiceIntent)
+        stopService(ttsServiceIntent)
+        stopService(mediaServiceIntent)
     }
 }

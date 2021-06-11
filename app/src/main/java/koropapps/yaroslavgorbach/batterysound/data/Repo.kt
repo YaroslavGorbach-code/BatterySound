@@ -1,5 +1,6 @@
 package koropapps.yaroslavgorbach.batterysound.data
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 
 interface Repo {
@@ -8,6 +9,7 @@ interface Repo {
     suspend fun updateTask(task: BatteryTask)
     suspend fun addTask(task: BatteryTask)
     fun getStartServiceIsAllow(): Boolean
-    fun getTextToSpeak(batteryLevel: Int): String
+    fun getTextToSpeak(batteryLevel: Int): String?
     fun removeTask(batteryTask: BatteryTask)
+    fun getFileUri(it: Int): Uri?
 }

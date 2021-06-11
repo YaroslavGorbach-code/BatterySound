@@ -1,5 +1,6 @@
 package koropapps.yaroslavgorbach.batterysound.data
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 
@@ -42,25 +43,39 @@ object RepoImp : Repo {
         return tasks.value?.find { it.isActive } != null
     }
 
-    override fun getTextToSpeak(batteryLevel: Int): String {
+    override fun getTextToSpeak(batteryLevel: Int): String? {
         tasks.value?.forEach { task ->
             if (batteryLevel == task.batteryLevel) {
                 if (task.isActive && !task.isConsumed) {
                     task.text?.let {
                         task.isConsumed = true
-                        Log.v("mes", "true consumed")
                         return it
                     }
                 }
             } else {
-                Log.v("mes", "false consumed")
                 task.isConsumed = false
             }
         }
-        return ""
+        return null
     }
 
     override fun removeTask(batteryTask: BatteryTask) {
         tasks.value = tasks.value?.filter { it != batteryTask }
+    }
+
+    override fun getFileUri(batteryLevel: Int): Uri? {
+        tasks.value?.forEach { task ->
+            if (batteryLevel == task.batteryLevel) {
+                if (task.isActive && !task.isConsumed) {
+                    task.fileUri?.let {
+                        task.isConsumed = true
+                        return it
+                    }
+                }
+            } else {
+                task.isConsumed = false
+            }
+        }
+        return null
     }
 }

@@ -3,7 +3,7 @@ package koropapps.yaroslavgorbach.batterysound
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
-import koropapps.yaroslavgorbach.batterysound.screen.TasksListFragment
+import koropapps.yaroslavgorbach.batterysound.screen.tasks.TasksListFragment
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi

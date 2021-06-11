@@ -25,9 +25,10 @@
         <service android:name=".services.BatteryService" />
         <service
             android:name=".services.TextToSpeechService"
-            android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-
+        <service
+            android:name=".services.MediaPlayerService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

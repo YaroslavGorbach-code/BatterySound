@@ -20,6 +20,11 @@ class TextToSpeechService : JobIntentService() {
         }
     }
 
+    override fun onDestroy() {
+        Log.v("destro", "dest")
+        super.onDestroy()
+    }
+
 
     companion object {
         fun enqueueWork(context: Context?, intent: Intent?) {

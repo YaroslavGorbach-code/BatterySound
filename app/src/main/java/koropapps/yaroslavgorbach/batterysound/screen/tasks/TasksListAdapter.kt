@@ -1,4 +1,4 @@
-package koropapps.yaroslavgorbach.batterysound.screen
+package koropapps.yaroslavgorbach.batterysound.screen.tasks
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package koropapps.yaroslavgorbach.batterysound.screen
+package koropapps.yaroslavgorbach.batterysound.screen.tasks
 
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,7 +19,8 @@ class TasksListView(binding: FragmentTasksBinding, callback: Callback) {
         fun onEditTask(batteryTask: BatteryTask)
     }
 
-    private var tasksAdapter: TasksListAdapter = TasksListAdapter(object :TasksListAdapter.Callback{
+    private var tasksAdapter: TasksListAdapter = TasksListAdapter(object :
+        TasksListAdapter.Callback {
         override fun onStartTask(batteryTask: BatteryTask) {
             callback.onStartTask(batteryTask)
         }
