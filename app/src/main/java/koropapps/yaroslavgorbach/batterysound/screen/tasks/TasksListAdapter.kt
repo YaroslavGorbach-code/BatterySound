@@ -3,7 +3,9 @@ package koropapps.yaroslavgorbach.batterysound.screen.tasks
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import koropapps.yaroslavgorbach.batterysound.R
 import koropapps.yaroslavgorbach.batterysound.data.BatteryTask
 import koropapps.yaroslavgorbach.batterysound.databinding.ItemTaskBinding
 import koropapps.yaroslavgorbach.batterysound.utill.getName
@@ -56,6 +58,11 @@ class TasksListAdapter(private val callback: Callback) :
             if (!item.text.isNullOrEmpty()) binding.text.text = item.text
             if (item.fileUri != null) binding.text.text = item.fileUri!!.getName(itemView.context)
             binding.level.text = item.batteryLevel.toString() + "%"
+            binding.icBattery.setImageDrawable(when(item.batteryLevel){
+                in 0..29-> ContextCompat.getDrawable(itemView.context, R.drawable.ic_battery_low)
+                in 30..69-> ContextCompat.getDrawable(itemView.context, R.drawable.ic_battery_half)
+                else -> ContextCompat.getDrawable(itemView.context, R.drawable.ic_battery_full)
+            })
             // workaround because we can't change switch isChecked state with active listener
             binding.start.setOnCheckedChangeListener(null)
             binding.start.isChecked = item.isActive
