@@ -3,11 +3,11 @@
 
     <style name="BaseAppTheme.DayNight" />
     <style name="BaseAppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">#90a4ae</item>
-        <item name="colorPrimaryDark">#62757f</item>
-        <item name="colorPrimaryVariant">#bfd4df</item>
-        <item name="colorSecondary">#64b5f6</item>
-        <item name="colorAccent">#1985c1</item>
+        <item name="colorPrimary">#d50000</item>
+        <item name="colorPrimaryDark">#9b0000</item>
+        <item name="colorPrimaryVariant">#ff5131</item>
+        <item name="colorSecondary">#ffc400</item>
+        <item name="colorAccent">#ffc400</item>
     </style>
 
 </resources>

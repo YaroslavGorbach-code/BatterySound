@@ -3,9 +3,7 @@ package koropapps.yaroslavgorbach.batterysound.screen.tasks
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import koropapps.yaroslavgorbach.batterysound.R
 import koropapps.yaroslavgorbach.batterysound.data.BatteryTask
 import koropapps.yaroslavgorbach.batterysound.databinding.ItemTaskBinding
 import koropapps.yaroslavgorbach.batterysound.utill.getName
@@ -14,8 +12,8 @@ class TasksListAdapter(private val callback: Callback) :
     RecyclerView.Adapter<TasksListAdapter.Vh>() {
 
     interface Callback {
-        fun onStartTask(batteryTask: BatteryTask)
-        fun onEditTask(batteryTask: BatteryTask)
+        fun onSwitchChecked(batteryTask: BatteryTask, isChecked: Boolean)
+        fun onTask(batteryTask: BatteryTask)
     }
 
     private var data: List<BatteryTask> = ArrayList()
@@ -48,11 +46,8 @@ class TasksListAdapter(private val callback: Callback) :
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.icPlay.setOnClickListener {
-                callback.onStartTask(data[adapterPosition])
-            }
             binding.root.setOnClickListener {
-                callback.onEditTask(data[adapterPosition])
+                callback.onTask(data[adapterPosition])
             }
         }
 
@@ -60,15 +55,13 @@ class TasksListAdapter(private val callback: Callback) :
         fun bind(item: BatteryTask) {
             if (!item.text.isNullOrEmpty()) binding.text.text = item.text
             if (item.fileUri != null) binding.text.text = item.fileUri!!.getName(itemView.context)
-
             binding.level.text = item.batteryLevel.toString() + "%"
-
-            binding.icPlay.setImageDrawable(
-                ContextCompat.getDrawable(
-                    binding.root.context,
-                    if (item.isActive) R.drawable.ic_stop else R.drawable.ic_play
-                )
-            )
+            // workaround because we can't change switch isChecked state with active listener
+            binding.start.setOnCheckedChangeListener(null)
+            binding.start.isChecked = item.isActive
+            binding.start.setOnCheckedChangeListener { _, isChecked ->
+                callback.onSwitchChecked(data[adapterPosition], isChecked)
+            }
         }
     }
 }

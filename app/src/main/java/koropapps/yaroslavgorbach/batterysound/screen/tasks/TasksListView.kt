@@ -12,21 +12,21 @@ import koropapps.yaroslavgorbach.batterysound.feature.SwipeDismissDecor
 
 class TasksListView(binding: FragmentTasksBinding, callback: Callback) {
     interface Callback {
-        fun onStartTask(task: BatteryTask)
+        fun onSwitchChecked(task: BatteryTask, isChecked: Boolean)
         fun onAdd()
         fun onSwipe(batteryTask: BatteryTask)
         fun onUndoRemove(batteryTask: BatteryTask)
-        fun onEditTask(batteryTask: BatteryTask)
+        fun onTask(batteryTask: BatteryTask)
     }
 
     private var tasksAdapter: TasksListAdapter = TasksListAdapter(object :
         TasksListAdapter.Callback {
-        override fun onStartTask(batteryTask: BatteryTask) {
-            callback.onStartTask(batteryTask)
+        override fun onSwitchChecked(batteryTask: BatteryTask, isChecked: Boolean) {
+            callback.onSwitchChecked(batteryTask, isChecked)
         }
 
-        override fun onEditTask(batteryTask: BatteryTask) {
-            callback.onEditTask(batteryTask)
+        override fun onTask(batteryTask: BatteryTask) {
+            callback.onTask(batteryTask)
         }
 
     })

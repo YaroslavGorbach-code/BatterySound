@@ -1,15 +1,15 @@
-package koropapps.yaroslavgorbach.batterysound.screen.addupdate
+package koropapps.yaroslavgorbach.batterysound.screen.createupdate
 
 import android.view.View
 import koropapps.yaroslavgorbach.batterysound.R
 import koropapps.yaroslavgorbach.batterysound.data.BatteryTask
-import koropapps.yaroslavgorbach.batterysound.databinding.DialogAddUpdateTaskBinding
+import koropapps.yaroslavgorbach.batterysound.databinding.DialogCreateUpdateTaskBinding
 import koropapps.yaroslavgorbach.batterysound.utill.filterIsEmpty
 import koropapps.yaroslavgorbach.batterysound.utill.filterLevel
 import koropapps.yaroslavgorbach.batterysound.utill.getName
 
-class AddUpdateTaskView(
-    private val binding: DialogAddUpdateTaskBinding,
+class CreateUpdateTaskView(
+    private val binding: DialogCreateUpdateTaskBinding,
     private val callback: Callback
 ) {
     private var task: BatteryTask? = null
@@ -39,7 +39,7 @@ class AddUpdateTaskView(
                         binding.level.text.toString().toInt(),
                         if (binding.radioText.isChecked) binding.text.text.toString() else null
                     )
-                }else{
+                } else {
                     task?.let {
                         it.batteryLevel = binding.level.text.toString().toInt()
                         it.text = binding.text.text.toString()
@@ -74,12 +74,12 @@ class AddUpdateTaskView(
         this.task = task
     }
 
-    private fun DialogAddUpdateTaskBinding.showPickUri() {
+    private fun DialogCreateUpdateTaskBinding.showPickUri() {
         textInputLayout.visibility = View.GONE
         pickFileLayout.visibility = View.VISIBLE
     }
 
-    private fun DialogAddUpdateTaskBinding.showPickText() {
+    private fun DialogCreateUpdateTaskBinding.showPickText() {
         textInputLayout.visibility = View.VISIBLE
         pickFileLayout.visibility = View.GONE
     }

@@ -1,10 +1,9 @@
-package koropapps.yaroslavgorbach.batterysound.screen.addupdate
+package koropapps.yaroslavgorbach.batterysound.screen.createupdate
 
 import android.Manifest
 import android.app.Dialog
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
@@ -12,11 +11,11 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import koropapps.yaroslavgorbach.batterysound.R
 import koropapps.yaroslavgorbach.batterysound.data.BatteryTask
-import koropapps.yaroslavgorbach.batterysound.databinding.DialogAddUpdateTaskBinding
+import koropapps.yaroslavgorbach.batterysound.databinding.DialogCreateUpdateTaskBinding
 import koropapps.yaroslavgorbach.batterysound.utill.getName
 import kotlin.properties.Delegates
 
-class AddUpdateTaskDialog : DialogFragment() {
+class CreateUpdateTaskDialog : DialogFragment() {
 
     interface Host {
         fun onAdded(level: Int, text: String?, fileUri: Uri?)
@@ -25,11 +24,11 @@ class AddUpdateTaskDialog : DialogFragment() {
 
     companion object {
         fun argsOf(task: BatteryTask) = bundleOf("task" to task)
-        private val AddUpdateTaskDialog.task: BatteryTask? get() = arguments?.let { it["task"] as BatteryTask }
+        private val CreateUpdateTaskDialog.task: BatteryTask? get() = arguments?.let { it["task"] as BatteryTask }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        var v: AddUpdateTaskView? = null
+        var v: CreateUpdateTaskView? = null
 
         var fileUri: Uri? by Delegates.observable(null) { _, _, new ->
             v?.setFileName(new?.getName(requireContext()) ?: "File name")
@@ -47,9 +46,9 @@ class AddUpdateTaskDialog : DialogFragment() {
             }
 
         // init view
-        v = AddUpdateTaskView(
-            DialogAddUpdateTaskBinding.inflate(LayoutInflater.from(requireContext())),
-            object : AddUpdateTaskView.Callback {
+        v = CreateUpdateTaskView(
+            DialogCreateUpdateTaskBinding.inflate(LayoutInflater.from(requireContext())),
+            object : CreateUpdateTaskView.Callback {
                 override fun onPickFile() {
                     requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
                 }

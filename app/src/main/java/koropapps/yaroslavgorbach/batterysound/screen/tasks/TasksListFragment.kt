@@ -12,7 +12,7 @@ import koropapps.yaroslavgorbach.batterysound.App
 import koropapps.yaroslavgorbach.batterysound.R
 import koropapps.yaroslavgorbach.batterysound.data.BatteryTask
 import koropapps.yaroslavgorbach.batterysound.databinding.FragmentTasksBinding
-import koropapps.yaroslavgorbach.batterysound.screen.addupdate.AddUpdateTaskDialog
+import koropapps.yaroslavgorbach.batterysound.screen.createupdate.CreateUpdateTaskDialog
 import koropapps.yaroslavgorbach.batterysound.services.BatteryService
 import koropapps.yaroslavgorbach.batterysound.services.MediaPlayerService
 import koropapps.yaroslavgorbach.batterysound.services.TextToSpeechService
@@ -22,39 +22,33 @@ import kotlin.random.Random
 
 
 @InternalCoroutinesApi
-class TasksListFragment : Fragment(R.layout.fragment_tasks), AddUpdateTaskDialog.Host {
+class TasksListFragment : Fragment(R.layout.fragment_tasks), CreateUpdateTaskDialog.Host {
     val repo by lazy { (activity?.application as App).provideRepo() }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val batteryServiceIntent = Intent(context, BatteryService::class.java)
-        val mediaServiceIntent = Intent(context, MediaPlayerService::class.java)
-        val ttsServiceIntent = Intent(context, TextToSpeechService::class.java)
-
 
         // init view
         val v = TasksListView(FragmentTasksBinding.bind(view), object : TasksListView.Callback {
-            override fun onStartTask(task: BatteryTask) {
+            override fun onSwitchChecked(task: BatteryTask, isChecked: Boolean) {
                 lifecycleScope.launch {
-                    task.isActive = !task.isActive
+                    task.isActive = isChecked
                     repo.updateTask(task)
                 }
                 if (repo.getStartServiceIsAllow()) {
-                    ContextCompat.startForegroundService(requireContext(), batteryServiceIntent)
+                    ContextCompat.startForegroundService(requireContext(), Intent(context, BatteryService::class.java))
                 } else {
-                    context?.stopServices(batteryServiceIntent, ttsServiceIntent, mediaServiceIntent)
+                    context?.stopServices()
                 }
             }
 
             override fun onAdd() {
-                AddUpdateTaskDialog().show(childFragmentManager, null)
+                CreateUpdateTaskDialog().show(childFragmentManager, null)
             }
 
             override fun onSwipe(batteryTask: BatteryTask) {
                 repo.removeTask(batteryTask)
-                if(!repo.getStartServiceIsAllow())
-                    context?.stopServices(batteryServiceIntent, ttsServiceIntent, mediaServiceIntent)
+                if(!repo.getStartServiceIsAllow()) context?.stopServices()
             }
 
             override fun onUndoRemove(batteryTask: BatteryTask) {
@@ -65,9 +59,9 @@ class TasksListFragment : Fragment(R.layout.fragment_tasks), AddUpdateTaskDialog
                 }
             }
 
-            override fun onEditTask(batteryTask: BatteryTask) {
-                AddUpdateTaskDialog().apply {
-                    arguments = AddUpdateTaskDialog.argsOf(batteryTask)
+            override fun onTask(batteryTask: BatteryTask) {
+                CreateUpdateTaskDialog().apply {
+                    arguments = CreateUpdateTaskDialog.argsOf(batteryTask)
                 }.show(childFragmentManager, null)
             }
 
@@ -90,13 +84,9 @@ class TasksListFragment : Fragment(R.layout.fragment_tasks), AddUpdateTaskDialog
         }
     }
 
-    private fun Context.stopServices(
-        batteryServiceIntent: Intent,
-        ttsServiceIntent: Intent,
-        mediaServiceIntent: Intent
-    ) {
-        stopService(batteryServiceIntent)
-        stopService(ttsServiceIntent)
-        stopService(mediaServiceIntent)
+    private fun Context.stopServices(){
+        stopService(Intent(context, BatteryService::class.java))
+        stopService(Intent(context, MediaPlayerService::class.java))
+        stopService(Intent(context, TextToSpeechService::class.java))
     }
 }

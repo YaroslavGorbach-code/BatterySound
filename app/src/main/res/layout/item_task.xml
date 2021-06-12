@@ -15,7 +15,8 @@
         app:layout_constraintBottom_toTopOf="@+id/level"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/text"
@@ -25,7 +26,7 @@
         android:lines="1"
         android:text="@android:string/unknownName"
         app:layout_constraintBottom_toBottomOf="@+id/ic_battery"
-        app:layout_constraintEnd_toStartOf="@+id/ic_play"
+        app:layout_constraintEnd_toStartOf="@+id/start"
         app:layout_constraintStart_toEndOf="@+id/ic_battery"
         app:layout_constraintTop_toTopOf="@+id/ic_battery"
         app:layout_constraintVertical_bias="0.604" />
@@ -47,18 +48,13 @@
         tools:ignore="SmallSp"
         tools:text="52%" />
 
-    <ImageView
-        android:id="@+id/ic_play"
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:background="?selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
-        android:src="@drawable/ic_play"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
