@@ -1,5 +1,6 @@
 package koropapps.yaroslavgorbach.batterysound.screen.tasks
 
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +11,7 @@ import koropapps.yaroslavgorbach.batterysound.databinding.FragmentTasksBinding
 import koropapps.yaroslavgorbach.batterysound.feature.LineDecorator
 import koropapps.yaroslavgorbach.batterysound.feature.SwipeDismissDecor
 
-class TasksListView(binding: FragmentTasksBinding, callback: Callback) {
+class TasksListView(private val binding: FragmentTasksBinding, callback: Callback) {
     interface Callback {
         fun onSwitchChecked(task: BatteryTask, isChecked: Boolean)
         fun onAdd()
@@ -72,10 +73,20 @@ class TasksListView(binding: FragmentTasksBinding, callback: Callback) {
         binding.fab.setOnClickListener {
             callback.onAdd()
         }
+        binding.createLarge.battery.setOnClickListener {
+            callback.onAdd()
+        }
     }
 
-    fun setTasks(it: List<BatteryTask>?) {
-        it?.let { it1 -> tasksAdapter.setData(it1) }
+    fun setTasks(list: List<BatteryTask>?) {
+        list?.let {
+            tasksAdapter.setData(list)
+            if (list.isEmpty()){
+                binding.createLarge.root.visibility = View.VISIBLE
+            }else{
+                binding.createLarge.root.visibility = View.GONE
+            }
+        }
     }
 
 }
