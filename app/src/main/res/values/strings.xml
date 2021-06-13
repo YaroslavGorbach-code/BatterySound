@@ -12,4 +12,5 @@
     <string name="text_to_speech">Text to speech</string>
     <string name="pick_file">pick file</string>
     <string name="file_name">File name</string>
+    <string name="do_not_disturb">Do not disturb</string>
 </resources>

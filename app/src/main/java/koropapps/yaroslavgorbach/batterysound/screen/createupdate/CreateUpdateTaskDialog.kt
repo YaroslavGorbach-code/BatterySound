@@ -12,7 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import koropapps.yaroslavgorbach.batterysound.R
 import koropapps.yaroslavgorbach.batterysound.data.BatteryTask
 import koropapps.yaroslavgorbach.batterysound.databinding.DialogCreateUpdateTaskBinding
-import koropapps.yaroslavgorbach.batterysound.utill.getName
+import koropapps.yaroslavgorbach.batterysound.util.getName
 import kotlin.properties.Delegates
 
 class CreateUpdateTaskDialog : DialogFragment() {

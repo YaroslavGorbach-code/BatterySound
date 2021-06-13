@@ -4,9 +4,9 @@ import android.view.View
 import koropapps.yaroslavgorbach.batterysound.R
 import koropapps.yaroslavgorbach.batterysound.data.BatteryTask
 import koropapps.yaroslavgorbach.batterysound.databinding.DialogCreateUpdateTaskBinding
-import koropapps.yaroslavgorbach.batterysound.utill.filterIsEmpty
-import koropapps.yaroslavgorbach.batterysound.utill.filterLevel
-import koropapps.yaroslavgorbach.batterysound.utill.getName
+import koropapps.yaroslavgorbach.batterysound.util.filterIsEmpty
+import koropapps.yaroslavgorbach.batterysound.util.filterLevel
+import koropapps.yaroslavgorbach.batterysound.util.getName
 
 class CreateUpdateTaskView(
     private val binding: DialogCreateUpdateTaskBinding,

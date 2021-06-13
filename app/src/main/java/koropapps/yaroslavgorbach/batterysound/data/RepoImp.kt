@@ -1,10 +1,24 @@
 package koropapps.yaroslavgorbach.batterysound.data
 
+import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import java.util.*
 
-object RepoImp : Repo {
+class RepoImp private constructor(context: Context) : Repo {
+    private val commonPref = CommonPrefImp(context)
+
+    companion object {
+        private lateinit var instance: Repo
+        fun getInstance(context: Context): Repo {
+            if (!::instance.isInitialized) {
+                instance = RepoImp(context)
+            }
+            return instance
+        }
+    }
+
+
     private val tasks: MutableLiveData<List<BatteryTask>?> = MutableLiveData(null)
 
     init {
@@ -13,13 +27,8 @@ object RepoImp : Repo {
         )
     }
 
-    override fun getTask(id: Int): BatteryTask? {
-        return tasks.value?.get(0)
-    }
-
-
     override fun getTasks(): MutableLiveData<List<BatteryTask>?> {
-       return tasks
+        return tasks
     }
 
     override suspend fun updateTask(task: BatteryTask) {
@@ -77,5 +86,43 @@ object RepoImp : Repo {
             }
         }
         return null
+    }
+
+    override fun setDoNotDisturbStart(h: Int, m: Int) {
+        commonPref.setDoNotDisturbStart(h, m)
+    }
+
+    override fun setDoNotDisturbEnd(h: Int, m: Int) {
+        commonPref.setDoNotDisturbEnd(h, m)
+    }
+
+    override fun getStartH(): Int {
+        return commonPref.getDoNotDisturbStartH()
+    }
+
+    override fun getStartM(): Int {
+        return commonPref.getDoNotDisturbStartM()
+    }
+
+    override fun getEndH(): Int {
+        return commonPref.getDoNotDisturbEndH()
+    }
+
+    override fun getEndM(): Int {
+        return commonPref.getDoNotDisturbEndM()
+    }
+
+    override fun getSoundIsAllow(): Boolean {
+        val calendarStart = Calendar.getInstance(Locale("ru"))
+        calendarStart[Calendar.HOUR_OF_DAY] = commonPref.getDoNotDisturbStartH()
+        calendarStart[Calendar.MINUTE] = commonPref.getDoNotDisturbStartM()
+
+        val calendarEnd = Calendar.getInstance(Locale("ru"))
+        calendarEnd[Calendar.HOUR_OF_DAY] = commonPref.getDoNotDisturbEndH()
+        calendarEnd[Calendar.MINUTE] = commonPref.getDoNotDisturbEndM()
+
+        val calendarCurrent = Calendar.getInstance(Locale("ru"))
+
+        return !calendarCurrent.time.after(calendarStart.time) && !calendarCurrent.time.before(calendarEnd.time)
     }
 }

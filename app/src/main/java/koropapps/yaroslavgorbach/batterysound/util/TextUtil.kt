@@ -1,4 +1,4 @@
-package koropapps.yaroslavgorbach.batterysound.utill
+package koropapps.yaroslavgorbach.batterysound.util
 
 import com.google.android.material.textfield.TextInputEditText
 

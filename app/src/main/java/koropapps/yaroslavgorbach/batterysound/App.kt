@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.graphics.Color
 import android.os.Build
+import koropapps.yaroslavgorbach.batterysound.data.Repo
 import koropapps.yaroslavgorbach.batterysound.data.RepoImp
 import koropapps.yaroslavgorbach.batterysound.data.RepoProvider
 
@@ -14,8 +15,8 @@ class App : Application(), RepoProvider {
         createChannel()
     }
 
-    override fun provideRepo(): RepoImp {
-        return RepoImp
+    override fun provideRepo(): Repo {
+        return RepoImp.getInstance(applicationContext)
     }
 
     private fun createChannel() {

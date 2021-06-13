@@ -6,7 +6,6 @@ import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.IBinder
-import android.util.Log
 import androidx.core.app.NotificationCompat
 
 class MediaPlayerService : Service() {
@@ -34,7 +33,6 @@ class MediaPlayerService : Service() {
     }
 
     override fun onDestroy() {
-        Log.v("destroy", "destroy")
         mediaPlayer.stop()
         mediaPlayer.release()
         super.onDestroy()

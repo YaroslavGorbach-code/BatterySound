@@ -1,4 +1,4 @@
-package koropapps.yaroslavgorbach.batterysound.utill
+package koropapps.yaroslavgorbach.batterysound.util
 
 import android.content.Context
 import android.net.Uri

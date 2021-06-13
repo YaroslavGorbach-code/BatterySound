@@ -17,6 +17,7 @@ class TasksListView(binding: FragmentTasksBinding, callback: Callback) {
         fun onSwipe(batteryTask: BatteryTask)
         fun onUndoRemove(batteryTask: BatteryTask)
         fun onTask(batteryTask: BatteryTask)
+        fun onDoNotDisturb()
     }
 
     private var tasksAdapter: TasksListAdapter = TasksListAdapter(object :
@@ -32,6 +33,12 @@ class TasksListView(binding: FragmentTasksBinding, callback: Callback) {
     })
 
     init {
+        binding.toolbar.setOnMenuItemClickListener {
+            when(it.itemId){
+                R.id.do_not_disturb -> callback.onDoNotDisturb()
+            }
+            true
+        }
         binding.list.apply {
             adapter = tasksAdapter
             layoutManager = LinearLayoutManager(context)
