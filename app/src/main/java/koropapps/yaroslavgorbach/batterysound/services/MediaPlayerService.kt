@@ -1,5 +1,6 @@
 package koropapps.yaroslavgorbach.batterysound.services
 
+import android.app.Notification
 import android.app.Service
 import android.content.Intent
 import android.media.AudioAttributes
@@ -7,7 +8,10 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
+import koropapps.yaroslavgorbach.batterysound.util.getServiceNotification
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@InternalCoroutinesApi
 class MediaPlayerService : Service() {
     private val mediaPlayer = MediaPlayer()
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -28,7 +32,8 @@ class MediaPlayerService : Service() {
                 stopSelf()
             }
         }
-        startForeground(1, NotificationCompat.Builder(this, "1").build())
+
+        startForeground(1, this.getServiceNotification())
         return START_NOT_STICKY
     }
 

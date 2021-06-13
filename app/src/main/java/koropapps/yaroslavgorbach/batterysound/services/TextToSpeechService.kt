@@ -1,5 +1,7 @@
 package koropapps.yaroslavgorbach.batterysound.services
 
+import android.app.Notification
+import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -8,10 +10,14 @@ import android.speech.tts.TextToSpeech
 import android.util.Log
 import androidx.core.app.JobIntentService
 import androidx.core.app.NotificationCompat
+import koropapps.yaroslavgorbach.batterysound.R
+import koropapps.yaroslavgorbach.batterysound.util.getServiceNotification
+import kotlinx.coroutines.InternalCoroutinesApi
 import java.util.*
 import kotlin.random.Random
 
 
+@InternalCoroutinesApi
 class TextToSpeechService : Service() {
     private var mySpeakTextToSpeech: TextToSpeech? = null
 
@@ -21,7 +27,8 @@ class TextToSpeechService : Service() {
             mySpeakTextToSpeech?.language = Locale.getDefault()
             mySpeakTextToSpeech!!.speak(message, TextToSpeech.QUEUE_ADD, null, Random.toString())
         }
-        startForeground(1, NotificationCompat.Builder(this, "1").build())
+
+        startForeground(1, this.getServiceNotification())
         return START_NOT_STICKY
     }
 

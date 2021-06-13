@@ -9,7 +9,9 @@ import koropapps.yaroslavgorbach.batterysound.data.Repo
 import koropapps.yaroslavgorbach.batterysound.data.RepoImp
 import koropapps.yaroslavgorbach.batterysound.services.MediaPlayerService
 import koropapps.yaroslavgorbach.batterysound.services.TextToSpeechService
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@InternalCoroutinesApi
 class BatteryReceiver : BroadcastReceiver() {
     private lateinit var repo: Repo
     override fun onReceive(context: Context?, intent: Intent?) {

@@ -24,7 +24,7 @@ class App : Application(), RepoProvider {
             val notificationChannel = NotificationChannel(
                 "1",
                 "Service notification",
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_HIGH
             )
             val notificationManager = this.getSystemService(NotificationManager::class.java)
             notificationManager.createNotificationChannel(notificationChannel)

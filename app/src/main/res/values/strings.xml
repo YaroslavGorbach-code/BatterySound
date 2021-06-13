@@ -17,4 +17,7 @@
     <string name="not_active">Not active</string>
     <string name="can_not_be_empty">This field cannot be empty</string>
     <string name="filter_level">Value can\'t be  less then 0 or bigger then 100</string>
+    <string name="notification_title">Battery sound notifications</string>
+    <string name="notification_message">App is working…</string>
+    <string name="ticker_text">Battery sound notifications</string>
 </resources>
