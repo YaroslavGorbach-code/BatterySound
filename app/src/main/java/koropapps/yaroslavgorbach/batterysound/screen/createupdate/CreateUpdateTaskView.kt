@@ -59,7 +59,8 @@ class CreateUpdateTaskView(
     fun setTask(task: BatteryTask) {
         binding.addUpdate.text = binding.root.context.getString(R.string.update)
         binding.level.setText(task.batteryLevel.toString())
-        binding.fileName.text = task.fileUri?.getName(binding.root.context) ?: "File name"
+        binding.fileName.text = task.fileUri?.getName(binding.root.context)
+            ?: binding.root.context.getString(R.string.file_name)
 
         task.text?.let {
             binding.radioText.isChecked = true

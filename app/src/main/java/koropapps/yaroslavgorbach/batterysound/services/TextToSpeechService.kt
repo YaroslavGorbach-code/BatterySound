@@ -27,7 +27,6 @@ class TextToSpeechService : Service() {
 
 
     override fun onDestroy() {
-        Log.v("destroy", "dest")
         mySpeakTextToSpeech?.shutdown()
         super.onDestroy()
     }

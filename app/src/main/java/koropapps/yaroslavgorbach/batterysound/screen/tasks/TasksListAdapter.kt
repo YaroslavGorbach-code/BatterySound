@@ -1,6 +1,7 @@
 package koropapps.yaroslavgorbach.batterysound.screen.tasks
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -63,6 +64,15 @@ class TasksListAdapter(private val callback: Callback) :
                 in 30..69-> ContextCompat.getDrawable(itemView.context, R.drawable.ic_battery_half)
                 else -> ContextCompat.getDrawable(itemView.context, R.drawable.ic_battery_full)
             })
+            if (item.isActive){
+                binding.ovalActive.drawable.setTint(Color.GREEN)
+                binding.textActive.setText(R.string.active)
+                binding.textActive.setTextColor(Color.GRAY)
+            }else{
+                binding.ovalActive.drawable.setTint(Color.LTGRAY)
+                binding.textActive.setText(R.string.not_active)
+                binding.textActive.setTextColor(Color.LTGRAY)
+            }
             // workaround because we can't change switch isChecked state with active listener
             binding.start.setOnCheckedChangeListener(null)
             binding.start.isChecked = item.isActive

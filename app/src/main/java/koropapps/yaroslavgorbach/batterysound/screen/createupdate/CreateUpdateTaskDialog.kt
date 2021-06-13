@@ -31,7 +31,7 @@ class CreateUpdateTaskDialog : DialogFragment() {
         var v: CreateUpdateTaskView? = null
 
         var fileUri: Uri? by Delegates.observable(null) { _, _, new ->
-            v?.setFileName(new?.getName(requireContext()) ?: "File name")
+            v?.setFileName(new?.getName(requireContext()) ?: getString(R.string.file_name))
         }
 
         val getUri = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->

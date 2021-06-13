@@ -13,4 +13,8 @@
     <string name="pick_file">pick file</string>
     <string name="file_name">File name</string>
     <string name="do_not_disturb">Do not disturb</string>
+    <string name="active">Active</string>
+    <string name="not_active">Not active</string>
+    <string name="can_not_be_empty">This field cannot be empty</string>
+    <string name="filter_level">Value can\'t be  less then 0 or bigger then 100</string>
 </resources>
