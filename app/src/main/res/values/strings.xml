@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">battery sound</string>
+    <string name="app_name">Battery notifications</string>
     <string name="createTask">Create notification</string>
     <string name="updateTask">Update notification</string>
     <string name="update">Update</string>
@@ -20,4 +20,6 @@
     <string name="notification_title">Battery sound notifications</string>
     <string name="notification_message">App is working…</string>
     <string name="ticker_text">Battery sound notifications</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
 </resources>

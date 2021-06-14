@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Уведомления батареии</string>
+    <string name="createTask">Создать уведомление</string>
+    <string name="updateTask">Изменить уведомление</string>
+    <string name="update">Изменить</string>
+    <string name="taskRemoved">Уведомление удалено</string>
+    <string name="undo">отмена</string>
+    <string name="battery_level">Уровень батареи</string>
+    <string name="create">создать</string>
+    <string name="text_to_speak">Текст</string>
+    <string name="music">Музыка</string>
+    <string name="text_to_speech">Текст в речь</string>
+    <string name="pick_file">выбрать файл</string>
+    <string name="file_name">Nмя файла</string>
+    <string name="do_not_disturb">Не беспокоить</string>
+    <string name="active">Активно</string>
+    <string name="not_active">Не активно</string>
+    <string name="can_not_be_empty">Это поле не может быть пустым</string>
+    <string name="filter_level">Значение не может быть меньше 0 или больше 100</string>
+    <string name="notification_title">Уведомления батареии</string>
+    <string name="notification_message">Приложение работает…</string>
+    <string name="ticker_text">Уведомления батареии</string>
+    <string name="start">Начало</string>
+    <string name="end">Конец</string>
+</resources>
