@@ -37,6 +37,7 @@ class RepoImp private constructor(context: Context) : Repo {
     }
 
     override suspend fun getStartServiceIsAllow(): Boolean {
+        Log.v("active" , db.batteryDao().getActive().toString())
         return db.batteryDao().getActive().isNotEmpty()
     }
 
@@ -117,4 +118,5 @@ class RepoImp private constructor(context: Context) : Repo {
 
         return !calendarCurrent.time.after(calendarStart.time) && !calendarCurrent.time.before(calendarEnd.time)
     }
+
 }

@@ -23,20 +23,31 @@ import kotlin.random.Random
 
 
 @InternalCoroutinesApi
-class TasksListFragment : Fragment(R.layout.fragment_tasks), CreateUpdateTaskDialog.Host, DoNotDisturbDialog.Host {
+class TasksListFragment : Fragment(R.layout.fragment_tasks), CreateUpdateTaskDialog.Host,
+    DoNotDisturbDialog.Host {
     val repo by lazy { (activity?.application as App).provideRepo() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        startService()
+
         // init view
         val v = TasksListView(FragmentTasksBinding.bind(view), object : TasksListView.Callback {
             override fun onSwitchChecked(task: BatteryTask, isChecked: Boolean) {
                 lifecycleScope.launch {
                     task.isActive = isChecked
+                    if (!task.isActive && task.isConsumed) context?.stopMediaServices()
                     repo.updateTask(task)
                 }
-                startService()
+                lifecycleScope.launch {
+                    if (repo.getStartServiceIsAllow()) {
+                        ContextCompat.startForegroundService(
+                            requireContext(),
+                            Intent(context, BatteryService::class.java)
+                        )
+                    } else {
+                        context?.stopBatteryService()
+                    }
+                }
             }
 
             override fun onAdd() {
@@ -46,7 +57,8 @@ class TasksListFragment : Fragment(R.layout.fragment_tasks), CreateUpdateTaskDia
             override fun onSwipe(batteryTask: BatteryTask) {
                 lifecycleScope.launch {
                     repo.removeTask(batteryTask)
-                    if (!repo.getStartServiceIsAllow()) context?.stopServices()
+                    if (batteryTask.isConsumed) context?.stopMediaServices()
+                    if (!repo.getStartServiceIsAllow()) context?.stopBatteryService()
                 }
             }
 
@@ -67,7 +79,12 @@ class TasksListFragment : Fragment(R.layout.fragment_tasks), CreateUpdateTaskDia
             override fun onDoNotDisturb() {
                 DoNotDisturbDialog()
                     .apply {
-                        arguments = DoNotDisturbDialog.argsOf(repo.getStartH(), repo.getStartM(), repo.getEndH(), repo.getEndM())
+                        arguments = DoNotDisturbDialog.argsOf(
+                            repo.getStartH(),
+                            repo.getStartM(),
+                            repo.getEndH(),
+                            repo.getEndM()
+                        )
                     }.show(childFragmentManager, null)
             }
 
@@ -98,23 +115,13 @@ class TasksListFragment : Fragment(R.layout.fragment_tasks), CreateUpdateTaskDia
         repo.setDoNotDisturbEnd(h, m)
     }
 
-    private fun startService() {
-        lifecycleScope.launch {
-            if (repo.getStartServiceIsAllow()) {
-                ContextCompat.startForegroundService(
-                    requireContext(),
-                    Intent(context, BatteryService::class.java)
-                )
-            } else {
-                context?.stopServices()
-            }
-        }
-    }
 
-
-    private fun Context.stopServices() {
-        stopService(Intent(context, BatteryService::class.java))
+    private fun Context.stopMediaServices() {
         stopService(Intent(context, MediaPlayerService::class.java))
         stopService(Intent(context, TextToSpeechService::class.java))
+    }
+
+    private fun Context.stopBatteryService() {
+        stopService(Intent(context, BatteryService::class.java))
     }
 }
