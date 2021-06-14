@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import koropapps.yaroslavgorbach.batterysound.App
 import koropapps.yaroslavgorbach.batterysound.R
-import koropapps.yaroslavgorbach.batterysound.data.BatteryTask
+import koropapps.yaroslavgorbach.batterysound.data.room.BatteryTask
 import koropapps.yaroslavgorbach.batterysound.databinding.FragmentTasksBinding
 import koropapps.yaroslavgorbach.batterysound.screen.createupdate.CreateUpdateTaskDialog
 import koropapps.yaroslavgorbach.batterysound.screen.donotdisturb.DoNotDisturbDialog
@@ -28,7 +28,7 @@ class TasksListFragment : Fragment(R.layout.fragment_tasks), CreateUpdateTaskDia
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        startService()
         // init view
         val v = TasksListView(FragmentTasksBinding.bind(view), object : TasksListView.Callback {
             override fun onSwitchChecked(task: BatteryTask, isChecked: Boolean) {
@@ -36,14 +36,7 @@ class TasksListFragment : Fragment(R.layout.fragment_tasks), CreateUpdateTaskDia
                     task.isActive = isChecked
                     repo.updateTask(task)
                 }
-                if (repo.getStartServiceIsAllow()) {
-                    ContextCompat.startForegroundService(
-                        requireContext(),
-                        Intent(context, BatteryService::class.java)
-                    )
-                } else {
-                    context?.stopServices()
-                }
+                startService()
             }
 
             override fun onAdd() {
@@ -51,8 +44,10 @@ class TasksListFragment : Fragment(R.layout.fragment_tasks), CreateUpdateTaskDia
             }
 
             override fun onSwipe(batteryTask: BatteryTask) {
-                repo.removeTask(batteryTask)
-                if (!repo.getStartServiceIsAllow()) context?.stopServices()
+                lifecycleScope.launch {
+                    repo.removeTask(batteryTask)
+                    if (!repo.getStartServiceIsAllow()) context?.stopServices()
+                }
             }
 
             override fun onUndoRemove(batteryTask: BatteryTask) {
@@ -73,8 +68,7 @@ class TasksListFragment : Fragment(R.layout.fragment_tasks), CreateUpdateTaskDia
                 DoNotDisturbDialog()
                     .apply {
                         arguments = DoNotDisturbDialog.argsOf(repo.getStartH(), repo.getStartM(), repo.getEndH(), repo.getEndM())
-                    }
-                    .show(childFragmentManager, null)
+                    }.show(childFragmentManager, null)
             }
 
         })
@@ -103,6 +97,20 @@ class TasksListFragment : Fragment(R.layout.fragment_tasks), CreateUpdateTaskDia
     override fun onEndTimeChanged(h: Int, m: Int) {
         repo.setDoNotDisturbEnd(h, m)
     }
+
+    private fun startService() {
+        lifecycleScope.launch {
+            if (repo.getStartServiceIsAllow()) {
+                ContextCompat.startForegroundService(
+                    requireContext(),
+                    Intent(context, BatteryService::class.java)
+                )
+            } else {
+                context?.stopServices()
+            }
+        }
+    }
+
 
     private fun Context.stopServices() {
         stopService(Intent(context, BatteryService::class.java))

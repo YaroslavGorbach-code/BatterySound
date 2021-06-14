@@ -2,11 +2,16 @@ package koropapps.yaroslavgorbach.batterysound.data
 
 import android.content.Context
 import android.net.Uri
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
+import androidx.lifecycle.LiveData
+import koropapps.yaroslavgorbach.batterysound.data.prefs.CommonPrefImp
+import koropapps.yaroslavgorbach.batterysound.data.room.BatteryTask
+import koropapps.yaroslavgorbach.batterysound.data.room.Db
 import java.util.*
 
 class RepoImp private constructor(context: Context) : Repo {
     private val commonPref = CommonPrefImp(context)
+    private val db = Db.getInstance(context)
 
     companion object {
         private lateinit var instance: Repo
@@ -19,70 +24,57 @@ class RepoImp private constructor(context: Context) : Repo {
     }
 
 
-    private val tasks: MutableLiveData<List<BatteryTask>?> = MutableLiveData(null)
-
-    init {
-        tasks.value = listOf(
-            BatteryTask(1, 64, null, "Test task"),
-        )
-    }
-
-    override fun getTasks(): MutableLiveData<List<BatteryTask>?> {
-        return tasks
+    override fun getTasks(): LiveData<List<BatteryTask>> {
+        return db.batteryDao().getAllLive()
     }
 
     override suspend fun updateTask(task: BatteryTask) {
-        val currentTasks = tasks.value
-        if (currentTasks != null) {
-            val wordIndex = currentTasks.indexOfFirst { it.id == task.id }
-            if (wordIndex != -1) {
-                tasks.value = currentTasks.toMutableList().apply {
-                    set(wordIndex, task)
-                }
-            }
-        }
+        db.batteryDao().update(task)
     }
 
     override suspend fun addTask(task: BatteryTask) {
-        tasks.value = tasks.value?.let { listOf(task) + it }
+        db.batteryDao().insert(task)
     }
 
-
-    override fun getStartServiceIsAllow(): Boolean {
-        return tasks.value?.find { it.isActive } != null
+    override suspend fun getStartServiceIsAllow(): Boolean {
+        return db.batteryDao().getActive().isNotEmpty()
     }
 
-    override fun getTextToSpeak(batteryLevel: Int): String? {
-        tasks.value?.forEach { task ->
+    override suspend fun getTextToSpeak(batteryLevel: Int): String? {
+        db.batteryDao().getAll().forEach { task ->
             if (batteryLevel == task.batteryLevel) {
                 if (task.isActive && !task.isConsumed) {
                     task.text?.let {
                         task.isConsumed = true
+                        updateTask(task)
                         return it
                     }
                 }
             } else {
                 task.isConsumed = false
+                updateTask(task)
             }
         }
         return null
     }
 
-    override fun removeTask(batteryTask: BatteryTask) {
-        tasks.value = tasks.value?.filter { it != batteryTask }
+    override suspend fun removeTask(batteryTask: BatteryTask) {
+        db.batteryDao().delete(batteryTask)
     }
 
-    override fun getFileUri(batteryLevel: Int): Uri? {
-        tasks.value?.forEach { task ->
+    override suspend fun getFileUri(batteryLevel: Int): Uri? {
+        db.batteryDao().getAll().forEach { task ->
             if (batteryLevel == task.batteryLevel) {
                 if (task.isActive && !task.isConsumed) {
                     task.fileUri?.let {
                         task.isConsumed = true
+                        updateTask(task)
                         return it
                     }
                 }
             } else {
                 task.isConsumed = false
+                updateTask(task)
             }
         }
         return null

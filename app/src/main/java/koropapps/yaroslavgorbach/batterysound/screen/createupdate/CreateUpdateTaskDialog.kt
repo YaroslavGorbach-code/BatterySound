@@ -10,7 +10,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import koropapps.yaroslavgorbach.batterysound.R
-import koropapps.yaroslavgorbach.batterysound.data.BatteryTask
+import koropapps.yaroslavgorbach.batterysound.data.room.BatteryTask
 import koropapps.yaroslavgorbach.batterysound.databinding.DialogCreateUpdateTaskBinding
 import koropapps.yaroslavgorbach.batterysound.util.getName
 import kotlin.properties.Delegates
@@ -34,14 +34,14 @@ class CreateUpdateTaskDialog : DialogFragment() {
             v?.setFileName(new?.getName(requireContext()) ?: getString(R.string.file_name))
         }
 
-        val getUri = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        val getUri = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
             fileUri = uri
         }
 
         val requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
                 if (isGranted) {
-                    getUri.launch("audio/*")
+                    getUri.launch(arrayOf("audio/*"))
                 }
             }
 

@@ -23,8 +23,10 @@ class MediaPlayerService : Service() {
                     .setUsage(AudioAttributes.USAGE_MEDIA)
                     .build()
             )
-            setDataSource(applicationContext, uri)
-            prepareAsync()
+            if (!mediaPlayer.isPlaying) {
+                setDataSource(applicationContext, uri)
+                prepareAsync()
+            }
             setOnPreparedListener {
                 start()
             }

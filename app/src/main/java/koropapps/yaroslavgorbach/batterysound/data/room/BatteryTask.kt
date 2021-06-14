@@ -1,13 +1,16 @@
-package koropapps.yaroslavgorbach.batterysound.data
+package koropapps.yaroslavgorbach.batterysound.data.room
 
 import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.Nullable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.*
 
+@Entity
 data class BatteryTask(
-    val id: Int,
+    @PrimaryKey val id: Int,
     var batteryLevel: Int,
     @Nullable var fileUri: Uri?,
     @Nullable var text: String?,

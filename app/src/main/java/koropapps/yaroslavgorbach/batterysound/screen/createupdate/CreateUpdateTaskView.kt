@@ -2,7 +2,7 @@ package koropapps.yaroslavgorbach.batterysound.screen.createupdate
 
 import android.view.View
 import koropapps.yaroslavgorbach.batterysound.R
-import koropapps.yaroslavgorbach.batterysound.data.BatteryTask
+import koropapps.yaroslavgorbach.batterysound.data.room.BatteryTask
 import koropapps.yaroslavgorbach.batterysound.databinding.DialogCreateUpdateTaskBinding
 import koropapps.yaroslavgorbach.batterysound.util.filterIsEmpty
 import koropapps.yaroslavgorbach.batterysound.util.filterLevel

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import koropapps.yaroslavgorbach.batterysound.R
-import koropapps.yaroslavgorbach.batterysound.data.BatteryTask
+import koropapps.yaroslavgorbach.batterysound.data.room.BatteryTask
 import koropapps.yaroslavgorbach.batterysound.databinding.ItemTaskBinding
 import koropapps.yaroslavgorbach.batterysound.util.getName
 

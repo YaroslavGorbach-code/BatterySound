@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import koropapps.yaroslavgorbach.batterysound.R
-import koropapps.yaroslavgorbach.batterysound.data.BatteryTask
+import koropapps.yaroslavgorbach.batterysound.data.room.BatteryTask
 import koropapps.yaroslavgorbach.batterysound.databinding.FragmentTasksBinding
 import koropapps.yaroslavgorbach.batterysound.feature.LineDecorator
 import koropapps.yaroslavgorbach.batterysound.feature.SwipeDismissDecor

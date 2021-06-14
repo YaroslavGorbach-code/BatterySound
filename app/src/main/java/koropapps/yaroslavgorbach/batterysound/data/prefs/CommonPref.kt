@@ -1,4 +1,4 @@
-package koropapps.yaroslavgorbach.batterysound.data
+package koropapps.yaroslavgorbach.batterysound.data.prefs
 
 interface CommonPref {
     fun setDoNotDisturbStart(h: Int, m: Int)
