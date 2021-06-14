@@ -1,13 +1,11 @@
 package koropapps.yaroslavgorbach.batterysound.services
 
-import android.app.Notification
 import android.app.Service
 import android.content.Intent
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.IBinder
-import androidx.core.app.NotificationCompat
 import koropapps.yaroslavgorbach.batterysound.util.getServiceNotification
 import kotlinx.coroutines.InternalCoroutinesApi
 
