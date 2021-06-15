@@ -22,13 +22,12 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".services.BatteryService" />
+        <service android:name=".services.BatteryService"
+            android:exported="false"/>
         <service
-            android:name=".services.TextToSpeechService"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
+            android:name=".services.TextToSpeechService" />
         <service
-            android:name=".services.MediaPlayerService"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
+            android:name=".services.MediaPlayerService" />
     </application>
 
 </manifest>

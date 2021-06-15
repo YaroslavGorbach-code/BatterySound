@@ -19,7 +19,7 @@ class BatteryService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         registerReceiver(mBatInfoReceiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
         startForeground(1, this.getServiceNotification())
-        return START_REDELIVER_INTENT
+        return START_STICKY
     }
 
     override fun onDestroy() {
