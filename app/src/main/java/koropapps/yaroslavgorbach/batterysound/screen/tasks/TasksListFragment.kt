@@ -21,7 +21,6 @@ import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
-
 @InternalCoroutinesApi
 class TasksListFragment : Fragment(R.layout.fragment_tasks), CreateUpdateTaskDialog.Host,
     DoNotDisturbDialog.Host {

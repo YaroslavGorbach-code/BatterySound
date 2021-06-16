@@ -30,12 +30,8 @@ class CreateUpdateTaskDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         var v: CreateUpdateTaskView? = null
 
-        var fileUri: Uri? by Delegates.observable(null) { _, _, new ->
-            v?.setFileName(new?.getName(requireContext()) ?: getString(R.string.file_name))
-        }
-
         val getUri = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
-            fileUri = uri
+            v?.setUri(uri)
         }
 
         val requestPermissionLauncher =
@@ -53,16 +49,12 @@ class CreateUpdateTaskDialog : DialogFragment() {
                     requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
                 }
 
-                override fun onAdd(level: Int, text: String?) {
+                override fun onAdd(level: Int, text: String?, fileUri: Uri?) {
                     (parentFragment as Host).onAdded(level, text, fileUri)
                     dialog?.dismiss()
                 }
 
                 override fun onUpdate(batteryTask: BatteryTask) {
-                    fileUri?.let {
-                        batteryTask.fileUri = it
-                        batteryTask.text = null
-                    }
                     (parentFragment as Host).onUpdated(batteryTask)
                     dialog?.dismiss()
                 }

@@ -1,5 +1,6 @@
 package koropapps.yaroslavgorbach.batterysound.screen.createupdate
 
+import android.net.Uri
 import android.view.View
 import koropapps.yaroslavgorbach.batterysound.R
 import koropapps.yaroslavgorbach.batterysound.data.room.BatteryTask
@@ -13,10 +14,11 @@ class CreateUpdateTaskView(
     private val callback: Callback
 ) {
     private var task: BatteryTask? = null
+    private var uri: Uri? = null
 
     interface Callback {
         fun onPickFile()
-        fun onAdd(level: Int, text: String?)
+        fun onAdd(level: Int, text: String?, fileUri: Uri?)
         fun onUpdate(batteryTask: BatteryTask)
     }
 
@@ -37,21 +39,25 @@ class CreateUpdateTaskView(
                 if (task == null) {
                     callback.onAdd(
                         binding.level.text.toString().toInt(),
-                        if (binding.radioText.isChecked) binding.text.text.toString() else null
+                        if (binding.radioText.isChecked) binding.text.text.toString() else null,
+                        if (binding.radioUri.isChecked && uri!=null) uri else null
                     )
                 } else {
                     task?.let {
+                        if (binding.radioText.isChecked){
+                            it.text = binding.text.text.toString()
+                            it.fileUri = null
+                        }
+                        if (binding.radioUri.isChecked && uri!=null){
+                            it.fileUri = uri
+                            it.text = null
+                        }
                         it.batteryLevel = binding.level.text.toString().toInt()
-                        it.text = binding.text.text.toString()
                         callback.onUpdate(it)
                     }
                 }
             }
         }
-    }
-
-    fun setFileName(s: String) {
-        binding.fileName.text = s
     }
 
     fun getRoot() = binding.root
@@ -83,6 +89,12 @@ class CreateUpdateTaskView(
     private fun DialogCreateUpdateTaskBinding.showPickText() {
         textInputLayout.visibility = View.VISIBLE
         pickFileLayout.visibility = View.GONE
+    }
+
+    fun setUri(uri: Uri?) {
+        binding.fileName.text =
+            uri?.getName(binding.root.context) ?: binding.root.context.getString(R.string.file_name)
+        this.uri = uri
     }
 
 }
